@@ -1,0 +1,68 @@
+.auth { display: grid; grid-template-columns: minmax(320px, 34%) 1fr; min-height: 100vh; background: var(--cream); }
+
+.auth__side { background: var(--red-panel); color: var(--cream); padding: 12px 48px 40px; display: flex; flex-direction: column; }
+.auth__side > a { text-decoration: none; margin-left: -40px; }
+.auth__side .logo__word { font-size: 2.1rem; }
+.auth__photo { margin-top: 14px; width: 100%; max-width: 368px; aspect-ratio: 367 / 550; object-fit: cover; border-radius: 16px; }
+.auth__tag { margin: 66px 0 0; color: var(--yellow); font-weight: 800; font-size: 2rem; line-height: .9; text-shadow: var(--text-shadow); }
+.auth__blurb { margin: 84px 0 0; font-size: 1.2rem; line-height: 1.45; }
+.auth__motto { margin: 76px 0 0 12px; font-size: 1.2rem; }
+
+.auth__main { padding: 30px 78px 40px 38px; max-width: 900px; }
+.auth__kicker { margin: 0; color: var(--red-text); font-weight: 800; font-size: 2.2rem; }
+.auth__title { margin: 8px 0 26px; color: var(--brown-ink); font-weight: 700; font-size: clamp(3rem, 6vw, 5.4rem); letter-spacing: -0.01em; text-shadow: var(--text-shadow); line-height: 1.05; }
+
+.auth__form { margin-left: 38px; display: flex; flex-direction: column; }
+.auth__form label { font-size: 2rem; margin: 6px 0 4px; }
+.auth__form input {
+  background: var(--white); border: 2px solid transparent; border-radius: 18px; height: 100px;
+  padding: 0 28px; font-size: 2rem; outline: none;
+}
+.auth__form input::placeholder { color: #b3aca4; }
+.auth__form input:focus { border-color: var(--yellow); }
+.auth__row-end { display: flex; justify-content: flex-end; min-height: 64px; align-items: center; }
+.auth__link { background: none; border: 0; padding: 0; color: var(--red-text); font-weight: 800; font-size: 2rem; text-decoration: none; }
+.auth__link:hover { text-decoration: underline; }
+.auth__hint { color: var(--muted); font-size: 1.05rem; }
+.auth__submit {
+  height: 88px; border: 0; border-radius: 16px; background: var(--lime); color: var(--green);
+  font-weight: 700; font-size: 2.3rem; transition: filter .12s;
+}
+.auth__submit:hover, .auth__guest:hover { filter: brightness(1.05); }
+.auth__submit:disabled, .auth__guest:disabled { opacity: .6; cursor: progress; }
+.auth .alert { margin: 0 0 14px; font-size: 1.1rem; }
+.auth__swap { display: flex; align-items: center; gap: 14px; font-size: 2rem; margin: 44px 0 0; }
+.auth__swap--login { justify-content: space-between; }
+.auth__divider { border-bottom: 4px solid #a7a6a3; height: 56px; margin-bottom: 52px; display: flex; justify-content: center; align-items: flex-end; }
+.auth__divider span { color: #8f8e8b; font-size: 1.9rem; transform: translateY(6px); background: var(--cream); padding: 0 12px; }
+.auth__guest {
+  height: 78px; border: 0; border-radius: 16px; background: var(--orange); color: var(--yellow);
+  font-weight: 700; font-size: 2rem;
+}
+.auth__demo { text-align: center; color: var(--muted); font-size: .95rem; margin: 14px 0 0; }
+
+/* Scale the poster-sized mockup type down on normal laptop screens */
+@media (max-width: 1500px) {
+  .auth__form label, .auth__swap, .auth__link { font-size: 1.5rem; }
+  .auth__form input { height: 76px; font-size: 1.5rem; }
+  .auth__submit { height: 68px; font-size: 1.8rem; }
+  .auth__guest { height: 62px; font-size: 1.6rem; }
+  .auth__divider span { font-size: 1.4rem; }
+  .auth__kicker { font-size: 1.8rem; }
+  .auth__row-end { min-height: 52px; }
+}
+@media (max-width: 900px) {
+  .auth { grid-template-columns: 1fr; }
+  .auth__side { padding: 12px 16px 24px; }
+  .auth__side > a { margin-left: 0; }
+  .auth__photo { max-width: none; aspect-ratio: 16 / 9; }
+  .auth__tag, .auth__blurb, .auth__motto { margin-top: 18px; }
+  .auth__motto { margin-left: 0; }
+  .auth__main { padding: 24px 16px 40px; }
+  .auth__form { margin-left: 0; }
+  .auth__form label, .auth__swap, .auth__link { font-size: 1.15rem; }
+  .auth__form input { height: 58px; font-size: 1.15rem; }
+  .auth__submit { height: 58px; font-size: 1.4rem; }
+  .auth__guest { height: 56px; font-size: 1.3rem; }
+  .auth__divider { height: 30px; margin-bottom: 28px; }
+}

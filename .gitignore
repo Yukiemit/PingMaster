@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.env
+*.log
+
+# local-only folders
+.qodo/
+_to_delete/

@@ -1,0 +1,59 @@
+.groups { padding-top: 50px; position: relative; }
+.groups__bar { position: absolute; right: 86px; top: 70px; }
+.groups__make { font-size: 1.45rem; font-weight: 700; padding: 6px 34px; }
+.groups__new { display: flex; gap: 8px; }
+.groups__new input { border: 3px solid var(--green); border-radius: 999px; padding: 6px 16px; background: var(--card); outline: none; min-width: 240px; }
+
+.group { margin-bottom: 26px; }
+.group__toggle { display: inline-flex; align-items: center; gap: 14px; background: none; border: 0; padding: 0; color: var(--brown); }
+.group__pill {
+  display: inline-block; min-width: 230px; padding: 10px 30px; border-radius: 999px; border: 4px solid var(--brown);
+  font-weight: 700; font-size: 1.55rem; color: var(--brown); text-align: center; box-shadow: 0 6px 10px -6px rgba(0,0,0,.4);
+}
+.group__toggle.open .group__pill { background: var(--brown); color: var(--cream); }
+
+.gcard {
+  margin: 34px 0 10px 76px; max-width: 850px; background: var(--green); color: var(--cream);
+  border-radius: 14px; padding: 26px 60px 30px 26px; box-shadow: var(--shadow-card);
+}
+.gcard__head { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.gcard__head h3 { margin: 0; font-weight: 400; font-size: 2rem; }
+.gcard__head h3 span { font-weight: 700; }
+.gcard__start { font-size: 1.45rem; font-weight: 500; padding: 8px 40px; box-shadow: 0 6px 12px -6px rgba(0,0,0,.6); }
+.gcard__empty { opacity: .8; }
+.members { list-style: none; padding: 0; margin: 24px 0 36px 6px; display: flex; flex-direction: column; gap: 4px; }
+.member { display: flex; align-items: center; gap: 16px; min-height: 42px; }
+.member__text { font-size: 2rem; line-height: 1.2; flex: 1; }
+.member__text strong { font-weight: 700; }
+.member__actions { display: flex; align-items: center; gap: 8px; }
+.mini { border: 2px solid var(--cream); background: transparent; color: var(--cream); border-radius: 999px; padding: 4px 34px; font-size: 1.05rem; letter-spacing: .02em; }
+.mini:hover { background: rgba(251, 237, 200, .12); }
+.mini--fill { background: var(--yellow); border-color: var(--yellow); color: var(--green-ink); font-weight: 600; }
+.icon-btn { background: none; border: 0; color: var(--cream); opacity: .55; padding: 4px; display: grid; place-items: center; }
+.icon-btn:hover { opacity: 1; }
+.member__edit { display: flex; align-items: center; gap: 10px; flex: 1; flex-wrap: wrap; font-size: 1.5rem; }
+.member__edit input { flex: 1; min-width: 180px; border-radius: 999px; border: 2px solid var(--yellow); background: rgba(0,0,0,.12); color: var(--cream); padding: 4px 16px; font-size: 1.1rem; outline: none; }
+.member__edit .mini { padding: 4px 16px; }
+.gcard__add { display: flex; gap: 44px; align-items: center; }
+.gcard__add .input { font-size: 1.9rem; padding: 6px 20px; }
+.gcard__addbtn { font-size: 1.6rem; font-weight: 500; padding: 6px 40px; }
+
+@media (max-width: 1300px) {
+  .member__text, .gcard__head h3 { font-size: 1.5rem; }
+  .gcard__add .input { font-size: 1.4rem; }
+}
+@media (max-width: 900px) {
+  .groups__bar { position: static; margin-bottom: 20px; }
+  .groups__new { flex-wrap: wrap; }
+  .gcard { margin-left: 0; padding: 20px 16px; }
+  .member { align-items: flex-start; flex-wrap: wrap; gap: 8px; }
+  .member > svg { width: 30px; height: 30px; }
+  .member__text { font-size: 1.15rem; }
+  .member__actions { width: 100%; padding-left: 38px; }
+  .mini { padding: 3px 14px; font-size: .9rem; }
+  .gcard__head h3 { font-size: 1.3rem; }
+  .gcard__start, .gcard__addbtn { font-size: 1.1rem; padding: 6px 18px; }
+  .gcard__add { gap: 10px; }
+  .gcard__add .input { font-size: 1.1rem; }
+  .group__pill { min-width: 0; font-size: 1.2rem; padding: 6px 20px; }
+}

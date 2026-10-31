@@ -1,0 +1,84 @@
+.landing { background: var(--cream); }
+.landing .footer { margin-top: 0; }
+
+.pnav { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 28px; background: var(--cream); }
+.pnav > a { text-decoration: none; }
+.pnav__links { display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
+.pnav__pill { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; padding: 7px 22px; font-weight: 600; font-size: 1rem; text-decoration: none; background: transparent; border: 3px solid; }
+.pnav__pill--green { border-color: var(--green); color: var(--green); }
+.pnav__pill--red { border-color: var(--red); color: var(--red); }
+.pnav__pill--yellow { border-color: var(--yellow); color: var(--yellow); }
+.pnav__pill--fill { background: var(--yellow); border-color: var(--yellow); color: var(--cream); }
+.pnav__pill--fill .chev { color: var(--red); }
+
+.lhero { position: relative; color: var(--cream); background: var(--red-panel); overflow: hidden; border-bottom: 4px solid var(--yellow-deep); }
+.lhero::before { content: ''; position: absolute; inset: 0; background: var(--bg) center / cover; opacity: .55; mix-blend-mode: multiply; }
+.lhero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(150, 25, 15, .85) 0%, rgba(150, 25, 15, .55) 55%, rgba(150, 25, 15, .2) 100%); }
+.lhero__inner { position: relative; z-index: 1; max-width: var(--max); margin: 0 auto; padding: 36px 24px 44px; }
+.lhero h1 { margin: 0; font-size: clamp(3.5rem, 11vw, 9rem); font-weight: 700; line-height: .86; letter-spacing: -0.02em; text-shadow: var(--text-shadow); }
+.lhero__tag { font-style: italic; font-size: clamp(1.2rem, 2.4vw, 1.9rem); margin: 14px 0 8px; }
+.lhero__row { display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap; }
+.lhero__row p { max-width: 760px; font-size: clamp(1rem, 1.7vw, 1.4rem); margin: 0; }
+.lhero .btn--cream { font-size: 1.5rem; font-weight: 700; padding: 10px 34px; }
+
+.lsteps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 54px; padding-top: 60px; padding-bottom: 60px; }
+.lstep { border-radius: 10px; padding: 26px 30px 34px; text-align: center; color: var(--cream); display: flex; flex-direction: column; align-items: center; gap: 22px; }
+.lstep h3 { margin: 0; font-size: 1.35rem; font-weight: 700; }
+.lstep p { margin: 0; font-size: 1.2rem; }
+.lstep--green { background: var(--green); }
+.lstep--yellow { background: var(--yellow); }
+.lstep--red { background: var(--red); }
+
+.lfeat h2 { font-size: clamp(1.6rem, 3.2vw, 2.7rem); margin: 18px 0 6px; font-weight: 800; letter-spacing: -0.01em; }
+.lfeat p { font-size: clamp(1rem, 1.8vw, 1.6rem); margin: 0; }
+.lfeat__wide { width: 100%; aspect-ratio: 495 / 234; object-fit: cover; border-radius: 12px; }
+.lfeat__pair { display: grid; grid-template-columns: 203fr 289fr; gap: 28px; margin-top: 18px; }
+.lfeat__pair img { width: 100%; aspect-ratio: 16 / 9.4; object-fit: cover; border-radius: 12px; }
+.lfeat__pair > div:first-child img { aspect-ratio: 203 / 159; }
+.lfeat__pair > div:last-child img { aspect-ratio: 289 / 159; }
+.lfeat__plan { display: flex; gap: 24px; align-items: center; margin: 60px 0 60px; color: var(--green); }
+.lfeat__plan > div { color: var(--ink); }
+.lfeat__plan h2 { margin-top: 0; }
+
+.ltry { background: var(--yellow-deep); text-align: center; padding: 40px 16px 70px; color: var(--cream); }
+.ltry__kicker { margin: 0; font-weight: 700; font-size: 1.3rem; }
+.ltry h2 { margin: 0; font-size: clamp(1.8rem, 3.6vw, 3rem); font-weight: 800; }
+.ltry__sub { margin: 0 0 20px; }
+.ltry__card { max-width: 860px; margin: 0 auto; animation: cardIn .25s ease; }
+@keyframes cardIn { from { opacity: 0; transform: translateY(12px); } }
+.ltry__card img { width: 100%; aspect-ratio: 333 / 100; object-fit: cover; }
+.ltry__card h3 { margin: 18px 0 0; font-size: clamp(1.6rem, 3vw, 2.6rem); font-weight: 800; }
+.ltry__card p { margin: 0; font-size: 1.2rem; }
+.ltry__btns { display: flex; justify-content: space-between; gap: 16px; margin: 40px auto 0; max-width: 1000px; }
+.vbtn { min-width: 160px; padding: 9px 20px; border-radius: 999px; font-weight: 700; font-size: 1.25rem; border: 3px solid; }
+.vbtn--no { background: var(--red); border-color: #a51d15; color: #f5866f; }
+.vbtn--skip { background: #b8b8b8; border-color: #7a7a7a; color: #4e4e4e; }
+.vbtn--yes { background: var(--lime); border-color: var(--green); color: var(--green); }
+.vbtn:hover { filter: brightness(1.06); transform: translateY(-1px); }
+.ltry__count { margin-top: 16px !important; opacity: .9; font-size: 1rem !important; }
+.ltry__done { background: var(--cream); color: var(--ink); border-radius: 16px; padding: 30px; }
+.ltry__done p { margin: 6px 0 20px !important; }
+
+.lguest { text-align: center; padding: 60px 16px; max-width: 980px; margin: 0 auto; }
+.lguest > svg { color: var(--yellow); }
+.lguest h2 { margin: 4px 0 6px; font-size: clamp(1.8rem, 3.4vw, 2.8rem); font-weight: 800; }
+.lguest p { font-size: clamp(1rem, 1.8vw, 1.55rem); margin: 0 0 14px; }
+.lguest small { display: block; margin-top: 22px; font-size: 1.15rem; }
+.lguest__btn { font-weight: 700; font-size: 1.3rem; padding: 8px 26px; background: var(--red); color: var(--yellow); border-color: #8c1b14; }
+
+.lend { background: var(--yellow-deep); text-align: center; padding: 40px 16px 140px; }
+.lend h2 { margin: 0; font-weight: 800; font-size: clamp(2.8rem, 9vw, 7.4rem); line-height: 1; letter-spacing: -0.02em; text-shadow: var(--text-shadow); }
+.lend .g { display: block; color: var(--green); }
+.lend .b { display: block; color: var(--brown-ink); padding-left: 8%; }
+.lend p { color: var(--cream); font-size: clamp(1.1rem, 2vw, 1.8rem); margin: 18px 0 40px; }
+
+@media (max-width: 800px) {
+  .pnav { flex-wrap: wrap; padding: 10px 16px; }
+  .pnav__links { justify-content: flex-start; }
+  .pnav__pill { padding: 5px 14px; font-size: .9rem; }
+  .lsteps { grid-template-columns: 1fr; gap: 18px; padding-top: 30px; padding-bottom: 30px; }
+  .lfeat__pair { grid-template-columns: 1fr; }
+  .lfeat__plan { margin: 36px 0; }
+  .ltry__btns { gap: 8px; }
+  .vbtn { min-width: 0; flex: 1; font-size: 1rem; }
+}
