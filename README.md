@@ -7,6 +7,7 @@ Group food-trip planner: collect everyone's picks, vote, and settle the bill in 
 
 Requires Node.js 18+ and a Supabase project (the database).
 
+<<<<<<< HEAD
 ```bash
 npm run install:all   # installs root, server and client dependencies
 ```
@@ -24,6 +25,8 @@ Then:
 npm run dev           # API on http://localhost:5000, website on http://localhost:5173
 ```
 
+=======
+>>>>>>> 7f6cbad909812b4137ca78d9c3f43c183125e7f2
 Open http://localhost:5173. Demo login: `demo@saantayo.app` / `tarakain` (or tap **Continue As Guest**).
 
 Production build: `npm run build` then `npm start` — Express serves the built site and the API on port 5000.
