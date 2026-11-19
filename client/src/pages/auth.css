@@ -66,3 +66,22 @@
   .auth__guest { height: 56px; font-size: 1.3rem; }
   .auth__divider { height: 30px; margin-bottom: 28px; }
 }
+
+/* ---- Verify email / forgot password ---- */
+.codeform__lead { font-size: 1.4rem; line-height: 1.45; margin: 0 0 26px; max-width: 760px; }
+.codeform__label { font-size: 1.3rem; margin: 18px 0 10px; }
+.codeform .codeform__pin { gap: 14px; margin: 0 0 26px; }
+.codeform .codeform__pin input {
+  width: 74px; height: 92px; padding: 0; text-align: center; font-size: 2.4rem; font-weight: 700; color: var(--green);
+  border-radius: 16px; border: 2px solid #e3d6bb;
+}
+.codeform .codeform__pin input:focus { border-color: var(--yellow); }
+.codeform__submit { margin-top: 26px; }
+.codeform__help { font-size: 1.15rem; margin: 22px 0 0; color: var(--muted); }
+.codeform__link { background: none; border: 0; padding: 0; color: var(--red-text); font: 700 1.15rem var(--font); cursor: pointer; text-decoration: underline; }
+.codeform__link:disabled { color: var(--muted); text-decoration: none; cursor: default; }
+@media (max-width: 800px) {
+  .codeform__lead { font-size: 1.05rem; }
+  .codeform .codeform__pin { gap: 6px; }
+  .codeform .codeform__pin input { width: 44px; height: 58px; font-size: 1.6rem; }
+}

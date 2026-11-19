@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Logo from '../components/Logo.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
-import { post } from '../lib/api.js';
 import boodle from '../assets/boodle.jpg';
 import './auth.css';
 
@@ -25,7 +24,12 @@ export default function Auth({ mode }) {
 
   const run = async (fn) => {
     setBusy(true); setError(''); setNotice('');
-    try { await fn(); navigate(next, { replace: true }); }
+    try {
+      const u = await fn();
+      // New (or not yet confirmed) accounts confirm their email first.
+      if (u && !u.isGuest && !u.emailVerified) navigate('/verify', { replace: true, state: { from: next } });
+      else navigate(next, { replace: true });
+    }
     catch (e) { setError(e.message); }
     finally { setBusy(false); }
   };
@@ -35,12 +39,7 @@ export default function Auth({ mode }) {
     run(() => (mode === 'login' ? login(email, password) : signup(email, password)));
   };
 
-  const forgot = async () => {
-    setError('');
-    if (!email) { setError('Type your email above first, then tap Forgot Password.'); return; }
-    const { message } = await post('/auth/forgot', { email }).catch((e) => ({ message: e.message }));
-    setNotice(message);
-  };
+  const forgot = () => navigate('/forgot', { state: { email } });
 
   return (
     <div className="auth">

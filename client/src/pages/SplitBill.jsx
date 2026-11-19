@@ -1,30 +1,22 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import AppLayout, { PageHero } from '../components/Layout.jsx';
 import { Caret, CheckCircle, Close, Doc, Equals, Info, Plus, Receipt, Users, Warn, Check } from '../components/Icons.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { get } from '../lib/api.js';
-import { peso } from '../lib/format.js';
+import { peso, time12 } from '../lib/format.js';
 import { splitByOrder, splitEqually } from '../lib/split.js';
 import './split.css';
 
 let nextId = 100;
 const newItem = (name = '', amount = '', sharedBy = []) => ({ id: `i${nextId++}`, name, amount, sharedBy });
 
-function sample(me) {
-  const members = [
-    { id: 'me', name: me?.name || 'You', me: true },
-    { id: 'rich', name: 'Rich' }, { id: 'pia', name: 'Pia' }, { id: 'tian', name: 'Tian' }, { id: 'yuki', name: 'Yuki' },
-  ];
-  const items = [
-    newItem('4 pc Chickenjoy Family Box', '180.00', ['me', 'rich', 'pia', 'tian']),
-    newItem('Burger Steak w/ Drink', '160.00', ['yuki']),
-    newItem('Regular Fries w/ Coke Float', '150.00', ['tian']),
-    newItem('Iced Mocha Float', '120.00', ['rich']),
-    newItem('10 pc Chicken Nuggets Solo', '0.00', ['me', 'rich', 'pia', 'tian', 'yuki']),
-  ];
-  return { title: 'Lunch with Ping Master', subtitle: 'Sample Session', members, items, extra: '40.00', total: '650.00' };
-}
+// A bill that isn't linked to a session: just you; add people below.
+const blankBill = (me) => ({
+  title: 'New bill', subtitle: 'Not linked to a session',
+  members: [{ id: 'me', name: me?.name || 'You', me: true }],
+  items: [newItem()], extra: '', discount: '', total: '',
+});
 
 const initial = (n) => n.trim().charAt(0).toUpperCase();
 const two = (n) => n.trim().slice(0, 2).toUpperCase();
@@ -89,11 +81,69 @@ function ItemRow({ item, members, open, onToggle, onChange, onRemove }) {
   );
 }
 
+const sessionWhen = (s) => {
+  if (!s.schedule) return null;
+  const [y, m, d] = s.schedule.date.split('-').map(Number);
+  return `${new Date(y, m - 1, d).toLocaleDateString('en-PH', { month: 'short', day: 'numeric', year: 'numeric' })} · ${time12(s.schedule.time)}`;
+};
+
+// Opened from the menu: choose which session's bill to split (or a blank bill).
+function SessionPicker() {
+  const navigate = useNavigate();
+  const [sessions, setSessions] = useState(null);
+  useEffect(() => { get('/sessions').then((d) => setSessions(d.sessions)).catch(() => setSessions([])); }, []);
+  // Scheduled sessions first (most recent date first), then the rest.
+  const list = (sessions || []).slice().sort((a, b) =>
+    (b.schedule ? 1 : 0) - (a.schedule ? 1 : 0) || (b.schedule?.date || b.createdAt).localeCompare(a.schedule?.date || a.createdAt));
+
+  return (
+    <AppLayout>
+      <PageHero line1="Split the" line2="Bill" sub="Done eating? Split the bill easily and fairly." />
+      <div className="split container">
+        <section className="scard spick">
+          <h2 className="scard__title"><span className="num">1</span> Which food trip is this for?</h2>
+          <p className="scard__sub">Pick a session to split the bill with the people who were there.</p>
+          {sessions === null && <p className="spick__empty">Loading your sessions…</p>}
+          {sessions?.length === 0 && (
+            <p className="spick__empty">You don’t have any sessions yet. <Link to="/home">Start one</Link>, or split a bill without one below.</p>
+          )}
+          <ul className="spick__list">
+            {list.map((s) => (
+              <li key={s.id}>
+                <button type="button" className="spick__item" onClick={() => navigate(`/split?session=${s.id}`)}>
+                  <span className="spick__icon"><Users width={24} height={24} /></span>
+                  <span className="spick__text">
+                    <strong>{s.name}</strong>
+                    <small>
+                      {[s.picked?.name, sessionWhen(s) || (s.status === 'done' ? null : 'Still planning'), `${s.participants.length} people`].filter(Boolean).join(' · ')}
+                    </small>
+                  </span>
+                  <Caret width={18} height={18} className="spick__go" />
+                </button>
+              </li>
+            ))}
+          </ul>
+          <button type="button" className="btn btn--outline-green spick__blank" onClick={() => navigate('/split?blank=1')}><Plus width={18} height={18} /> Start a blank bill</button>
+        </section>
+      </div>
+    </AppLayout>
+  );
+}
+
 export default function SplitBill() {
-  const { user } = useAuth();
   const [params] = useSearchParams();
   const sessionId = params.get('session');
-  const [state, setState] = useState(() => sample(user));
+  const blank = params.get('blank') === '1';
+  if (!sessionId && !blank) return <SessionPicker />;
+  return <BillEditor key={sessionId || 'blank'} sessionId={sessionId} />;
+}
+
+function BillEditor({ sessionId }) {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const [state, setState] = useState(() => (sessionId ? null : blankBill(user)));
+  const [loadError, setLoadError] = useState('');
+  const [newPerson, setNewPerson] = useState('');
   const [mode, setMode] = useState('order');
   const [openItem, setOpenItem] = useState(null);
   const [expanded, setExpanded] = useState({});
@@ -111,16 +161,17 @@ export default function SplitBill() {
         members, items: [newItem()], extra: '', total: '',
       });
       setOpenItem(null);
-    }).catch(() => {});
+    }).catch((e) => setLoadError(e.message));
   }, [sessionId]);
 
-  const { members, items } = state;
-  const extra = Number(state.extra) || 0;
-  const discount = Number(state.discount) || 0;
+  const members = state?.members || [];
+  const items = state?.items || [];
+  const extra = Number(state?.extra) || 0;
+  const discount = Number(state?.discount) || 0;
   const order = useMemo(() => splitByOrder(items, members, extra, discount), [items, members, extra, discount]);
-  const equal = useMemo(() => splitEqually(Number(state.total) || 0, members), [state.total, members]);
+  const equal = useMemo(() => splitEqually(Number(state?.total) || 0, members), [state?.total, members]);
   const shares = mode === 'order' ? order.shares : equal;
-  const total = mode === 'order' ? order.receipt : Number(state.total) || 0;
+  const total = mode === 'order' ? order.receipt : Number(state?.total) || 0;
 
   const patch = (p) => { setReviewed(false); setState((s) => ({ ...s, ...p })); };
   const allOpen = members.every((m) => expanded[m.id]);
@@ -129,6 +180,31 @@ export default function SplitBill() {
     setExpanded(Object.fromEntries(members.map((m) => [m.id, next])));
     setReviewed(next);
   };
+
+  // Add someone who isn't in the session (or anyone, for a blank bill).
+  const addPerson = (e) => {
+    e.preventDefault();
+    const name = newPerson.trim();
+    if (!name) return;
+    patch({ members: [...members, { id: `x${nextId++}`, name }] });
+    setNewPerson('');
+  };
+  const removePerson = (id) => patch({
+    members: members.filter((m) => m.id !== id),
+    items: items.map((it) => ({ ...it, sharedBy: it.sharedBy.filter((x) => x !== id) })),
+  });
+
+  if (!state) {
+    return (
+      <AppLayout>
+        <PageHero line1="Split the" line2="Bill" sub="Done eating? Split the bill easily and fairly." />
+        <div className="split container">
+          <p className={loadError ? 'alert alert--error' : ''}>{loadError || 'Loading the session…'}</p>
+          {loadError && <button className="btn btn--outline-green" onClick={() => navigate('/split')}>Choose another session</button>}
+        </div>
+      </AppLayout>
+    );
+  }
 
   let status;
   if (mode === 'order') {
@@ -153,8 +229,20 @@ export default function SplitBill() {
             <small>{state.subtitle} • {members.length} Members</small>
           </div>
           <ul className="sbar__members">
-            {members.map((m) => <li key={m.id} className={m.me ? 'me' : ''}>{m.name}{m.me && ' · You'}</li>)}
+            {members.map((m) => (
+              <li key={m.id} className={m.me ? 'me' : ''}>
+                {m.name}{m.me && ' · You'}
+                {!m.me && m.id.startsWith('x') && (
+                  <button type="button" className="sbar__remove" aria-label={`Remove ${m.name}`} onClick={() => removePerson(m.id)}><Close width={14} height={14} /></button>
+                )}
+              </li>
+            ))}
           </ul>
+          <form className="sbar__add" onSubmit={addPerson}>
+            <input placeholder={sessionId ? 'Add someone else' : 'Add a person'} aria-label="Add a person to this bill" value={newPerson} onChange={(e) => setNewPerson(e.target.value)} maxLength={30} />
+            <button type="submit" className="btn btn--green btn--sm" disabled={!newPerson.trim()}><Plus width={16} height={16} /> Add</button>
+          </form>
+          <button type="button" className="linkbtn sbar__switch" onClick={() => navigate('/split')}>Switch session</button>
         </section>
 
         <div className="split__grid">

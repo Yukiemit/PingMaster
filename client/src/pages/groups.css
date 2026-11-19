@@ -1,5 +1,7 @@
 .groups { padding-top: 50px; position: relative; }
 .groups__bar { position: absolute; right: 86px; top: 70px; }
+/* No groups yet: sit above the empty message instead of floating over it. */
+.groups__bar--static { position: static; display: flex; justify-content: flex-end; margin: 20px 0 18px; }
 .groups__make { font-size: 1.45rem; font-weight: 700; padding: 6px 34px; }
 .groups__new { display: flex; gap: 8px; }
 .groups__new input { border: 3px solid var(--green); border-radius: 999px; padding: 6px 16px; background: var(--card); outline: none; min-width: 240px; }
@@ -25,6 +27,11 @@
 .member { display: flex; align-items: center; gap: 16px; min-height: 42px; }
 .member__text { font-size: 2rem; line-height: 1.2; flex: 1; }
 .member__text strong { font-weight: 700; }
+.member__tag { font-style: normal; font-size: .8rem; font-weight: 600; background: var(--yellow); color: var(--green); border-radius: 999px; padding: 2px 10px; margin-left: 8px; vertical-align: 6px; }
+.member__tag--warn { background: rgba(251, 237, 200, .2); color: var(--cream); }
+.member__owner { opacity: .85; }
+.gcard__hint { margin: 10px 0 0; font-size: .95rem; opacity: .8; }
+.linkish { background: none; border: 0; padding: 0; color: var(--yellow); font: inherit; text-decoration: underline; cursor: pointer; }
 .member__actions { display: flex; align-items: center; gap: 8px; }
 .mini { border: 2px solid var(--cream); background: transparent; color: var(--cream); border-radius: 999px; padding: 4px 34px; font-size: 1.05rem; letter-spacing: .02em; }
 .mini:hover { background: rgba(251, 237, 200, .12); }
@@ -34,6 +41,24 @@
 .member__edit { display: flex; align-items: center; gap: 10px; flex: 1; flex-wrap: wrap; font-size: 1.5rem; }
 .member__edit input { flex: 1; min-width: 180px; border-radius: 999px; border: 2px solid var(--yellow); background: rgba(0,0,0,.12); color: var(--cream); padding: 4px 16px; font-size: 1.1rem; outline: none; }
 .member__edit .mini { padding: 4px 16px; }
+.pedit { flex: 1; display: flex; flex-direction: column; gap: 10px; padding: 6px 0 12px; }
+.pedit__name { font-size: 1.6rem; font-weight: 700; }
+.pedit__chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.pedit__chip {
+  border: 2px solid rgba(251, 237, 200, .7); background: transparent; color: var(--cream); border-radius: 999px;
+  padding: 5px 16px; font: 500 1rem var(--font); cursor: pointer; transition: background .12s, color .12s;
+}
+.pedit__chip:hover { background: rgba(251, 237, 200, .12); }
+.pedit__chip[aria-pressed="true"] { background: var(--yellow); border-color: var(--yellow); color: var(--green); font-weight: 700; }
+.pedit__chip--none[aria-pressed="true"] { background: var(--cream); border-color: var(--cream); }
+.pedit__row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.pedit__other {
+  flex: 1; min-width: 200px; border-radius: 999px; border: 2px solid rgba(251, 237, 200, .7); background: rgba(0,0,0,.12);
+  color: var(--cream); padding: 5px 16px; font: 1rem var(--font); outline: none;
+}
+.pedit__other:focus { border-color: var(--yellow); }
+.pedit__other::placeholder { color: rgba(251, 237, 200, .6); }
+.pedit .mini { padding: 4px 18px; }
 .gcard__add { display: flex; gap: 44px; align-items: center; }
 .gcard__add .input { font-size: 1.9rem; padding: 6px 20px; }
 .gcard__addbtn { font-size: 1.6rem; font-weight: 500; padding: 6px 40px; }

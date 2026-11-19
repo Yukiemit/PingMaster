@@ -8,6 +8,7 @@ import Calendar from './pages/Calendar.jsx';
 import Session from './pages/Session.jsx';
 import JoinRedirect from './pages/JoinRedirect.jsx';
 import SplitBill from './pages/SplitBill.jsx';
+import { ForgotPassword, VerifyEmail } from './pages/AuthCodes.jsx';
 
 // Logged-in users and guests can use the app; everyone else goes to login.
 function RequireUser({ children }) {
@@ -15,6 +16,8 @@ function RequireUser({ children }) {
   const location = useLocation();
   if (!ready) return null;
   if (!user) return <Navigate to="/login" replace state={{ from: location.pathname + location.search }} />;
+  // Accounts confirm their email before using the app (guests don't have one).
+  if (!user.isGuest && !user.emailVerified) return <Navigate to="/verify" replace state={{ from: location.pathname + location.search }} />;
   return children;
 }
 
@@ -24,6 +27,8 @@ export default function App() {
       <Route path="/" element={<Landing />} />
       <Route path="/login" element={<Auth mode="login" />} />
       <Route path="/signup" element={<Auth mode="signup" />} />
+      <Route path="/verify" element={<VerifyEmail />} />
+      <Route path="/forgot" element={<ForgotPassword />} />
       <Route path="/join/:code" element={<JoinRedirect />} />
       <Route path="/home" element={<RequireUser><Home /></RequireUser>} />
       <Route path="/groups" element={<RequireUser><MyGroup /></RequireUser>} />
